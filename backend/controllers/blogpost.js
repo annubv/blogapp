@@ -2,26 +2,26 @@ const db = require("../databases/sqlite");
 const users = db.users;
 const posts = db.posts;
 
-const login = (req, res) => {
-  const { email, password } = req.body;
-  if (!(email && password)) {
+const blogpost = (req, res) => {
+  const { blog, name, email } = req.body;
+  if (!(blog && name && email)) {
     return res.render("profile", {
-      msg: "Please enter email and password",
+      msg: "Please enter every field",
       flag: false
     });
   } else {
-    users
-      .findOne({
-        where: {
-          email: email,
-          password: password
-        }
+    posts
+      .create({
+        blog,
+        name,
+        email
       })
-      .then(user => {
+      .then(post => {
+        console.log(post);
         posts
           .findAll({
             where: {
-              email: user.email
+              email: email
             }
           })
           .then(allblogs => {
@@ -29,9 +29,9 @@ const login = (req, res) => {
             return res.render("profile", {
               allblogs: allblogs,
               flag: true,
-              user: user.name,
-              email: user.email,
-              msg: user.name.toUpperCase() + "'S BLOGS"
+              user: name,
+              email: email,
+              msg: name + "'s Blogs"
             });
           })
           .catch(err => {
@@ -40,12 +40,8 @@ const login = (req, res) => {
       })
       .catch(err => {
         console.log(err);
-        return res.render("profile", {
-          msg: "Wrong Email or Password. Please Try Again",
-          flag: false
-        });
       });
   }
 };
 
-module.exports = { login: login };
+module.exports = { blogpost: blogpost };

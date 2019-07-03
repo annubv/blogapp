@@ -1,17 +1,29 @@
+const db = require("../databases/sqlite");
+const users = db.users;
+const posts = db.posts;
+
 const index = (req, res) => {
-  res.render("index");
+  posts
+    .findAll()
+    .then(allblogs => {
+      console.log("Showing all posts :" + allblogs);
+      return res.render("index", { allblogs: allblogs });
+    })
+    .catch(err => {
+      console.log("Error Occured! :" + err);
+    });
 };
 
 const signup = (req, res) => {
   res.render("signup");
 };
 
-const profile = (req, res) => {
-  res.render("profile");
+const login = (req, res) => {
+  res.render("login");
 };
 
 module.exports = {
   index: index,
   signup: signup,
-  profile: profile
+  login: login
 };

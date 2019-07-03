@@ -22,15 +22,15 @@ const users = db.define("users", {
 });
 
 const posts = db.define("posts", {
+  blog: {
+    type: sq.STRING,
+    allowNull: false
+  },
   name: {
     type: sq.STRING,
     allowNull: false
   },
   email: {
-    type: sq.STRING,
-    allowNull: false
-  },
-  blog: {
     type: sq.STRING,
     allowNull: false
   }
